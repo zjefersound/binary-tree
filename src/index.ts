@@ -5,6 +5,12 @@ tree.insert(30)
 tree.insert(4)
 tree.insert(41)
 tree.insert(33)
+tree.insert(99)
+tree.insert(74)
+tree.insert(160)
+tree.insert(180)
+tree.insert(2)
+tree.insert(1)
 tree.show();
 
 console.log('\n');

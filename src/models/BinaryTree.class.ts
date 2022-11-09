@@ -1,8 +1,10 @@
 export class BinaryTree {
+  // Define a classe de uma árvore binária
   value: number;
   left: BinaryTree | null;
   right: BinaryTree | null;
 
+  // precisa de um valor root pra ser criado
   constructor(value: number) {
     this.left = null;
     this.right = null;
@@ -10,35 +12,44 @@ export class BinaryTree {
   }
 
   insert(value: number) {
+    // Vai pra direita
     if (value > this.value) {
-      // Value is greater than the current root
-      if (!this.right)
-        this.right = new BinaryTree(value); // If it's empty we can add here
-      else this.right.insert(value); // If it's not empty repeat the process
+      // Se não existe, adiciona, se existe, procura até não ter
+      if (!this.right) this.right = new BinaryTree(value);
+      else this.right.insert(value);
     }
+    // Vai pra esquerda
     if (value < this.value) {
-      // Value is not greater than the current root
-      if (!this.left)
-        this.left = new BinaryTree(value); // If it's empty we can add here
-      else this.left.insert(value); // If it's not empty repeat the process
+      // Se não existe, adiciona, se existe, procura até não ter
+      if (!this.left) this.left = new BinaryTree(value);
+      else this.left.insert(value);
     }
   }
 
+  // Por padrão se tem uma lista vazia de nodes
   getSum(nodes: number[] = []) {
+    // Adiciona no array de nodes passado
     nodes.push(this.value);
+
+    // Caso tenha algum node filho repete o processo e passsa a lista como referência
     if (this.left) this.left.getTotalNodes(nodes);
     if (this.right) this.right.getTotalNodes(nodes);
+
+    // Percorre o array de nodes e retorna a soma de todos
     return nodes.reduce((total, node) => (total += node), 0);
   }
 
-  getDepth(rows: number[][] = [], depth: number = 0) {
-    if (rows[depth]) rows[depth].push(this.value);
-    else rows[depth] = [this.value];
+  // Profundidade começa como 1 
+  getDepth(biggestDepth = 0, depth: number = 1) {
+    // Se a profundidade atual maior que a maior encontrada, substitiu 
+    if (depth > biggestDepth) biggestDepth = depth;
 
-    if (this.left) this.left.getDepth(rows, depth + 1);
-    if (this.right) this.right.getDepth(rows, depth + 1);
+    // Caso ainda tenha nodes filhos aumeta a profundidade
+    if (this.left) biggestDepth = this.left.getDepth(biggestDepth, depth + 1);
+    if (this.right) biggestDepth = this.right.getDepth(biggestDepth, depth + 1);
 
-    return rows.length;
+    // Caso não tenha mais filhos retorna a profundidade encontrada
+    return biggestDepth;
   }
 
   getTotalNodes(nodes: number[] = []) {
